@@ -11,13 +11,15 @@ import java.net.UnknownHostException;
 
 public class JSONService {
 
-    private String serverURL = "http://localhost:8080/";
+    private String serverURL;
     private Client client = ClientBuilder.newClient();
-    private WebTarget webTarget = client.target(serverURL);
+    private WebTarget webTarget;
     //private Invocation.Builder builder = webTarget.request(MediaType.APPLICATION_JSON);
 
     public JSONService(String serverUrl){
+
         this.serverURL = serverUrl;
+        this.webTarget = client.target(serverURL);
     }
 
 
@@ -31,6 +33,7 @@ public class JSONService {
         FileLocation fileLocation = response.readEntity(FileLocation.class);
         return fileLocation;
     }
+
 
     public void SubmitName(String name) throws StatusExeption{
         String ip = "";
