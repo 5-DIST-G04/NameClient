@@ -1,12 +1,23 @@
 package com.practicum;
 
+import java.net.DatagramPacket;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.util.Scanner;
 
 public class Main {
+   public static MulticastReceiver receive = new MulticastReceiver("224.0.0.251",3000);
 
     public static void main(String args[]) throws Exception {
-        Scanner input = new Scanner(System.in);
+         Scanner input = new Scanner(System.in);
+        System.out.println("debug");
+        MulticastPublisher publisher = new MulticastPublisher();
+        System.out.println("enter the name of this node");
+        String name = input.next();
+        publisher.multicast("{'name':"+name +",'ip':"+ Inet4Address.getLocalHost().getHostAddress()+ "}");
 
+        /*MulticastPublisher publish = new MulticastPublisher();
         System.out.println("Enter the server url:");
         String url = input.next();
 
@@ -41,12 +52,12 @@ public class Main {
         } catch (StatusExeption e){
             System.out.printf("the server responded with status code %d\n",e.getStatuscode());
         }
-
-
+*/
+    }
 
     }
 
 
-}
+
 
 
