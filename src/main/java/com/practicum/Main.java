@@ -8,14 +8,16 @@ import java.util.Scanner;
 
 public class Main {
    public static MulticastReceiver receive = new MulticastReceiver("224.0.0.251",3000);
-
-    public static void main(String args[]) throws Exception {
+   public static int hashName;
+   public static void main(String args[]) throws Exception {
          Scanner input = new Scanner(System.in);
         System.out.println("debug");
         MulticastPublisher publisher = new MulticastPublisher();
         System.out.println("enter the name of this node");
         String name = input.next();
-        publisher.multicast("{'name':"+name +",'ip':"+ Inet4Address.getLocalHost().getHostAddress()+ "}");
+        hashName = Math.abs(name.hashCode()) % 32768;
+        publisher.multicast(name +","+ Inet4Address.getLocalHost().getHostAddress());
+        receive.run();
 
         /*MulticastPublisher publish = new MulticastPublisher();
         System.out.println("Enter the server url:");

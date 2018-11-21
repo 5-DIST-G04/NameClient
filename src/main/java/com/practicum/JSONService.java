@@ -52,7 +52,6 @@ public class JSONService {
         if(r.getStatus() != 201)
             throw new StatusExeption(r.getStatus());
         return;
-
     }
 
     public void RemoveName(String name) throws StatusExeption{
