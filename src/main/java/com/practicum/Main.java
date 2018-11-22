@@ -17,7 +17,7 @@ public class Main {
         String name = input.next();
         hashName = Math.abs(name.hashCode()) % 32768;
         publisher.multicast(name +","+ Inet4Address.getLocalHost().getHostAddress());
-        receive.run();
+        receive.start();
 
         /*MulticastPublisher publish = new MulticastPublisher();
         System.out.println("Enter the server url:");
