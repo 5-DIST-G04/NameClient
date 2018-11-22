@@ -3,7 +3,6 @@ package com.practicum;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.Serializable;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -11,21 +10,19 @@ import java.net.UnknownHostException;
 
 public class JSONService {
 
-    private String serverURL;
+    private String targetURL;
     private Client client = ClientBuilder.newClient();
     private WebTarget webTarget;
     //private Invocation.Builder builder = webTarget.request(MediaType.APPLICATION_JSON);
 
     public JSONService(String serverUrl){
 
-        this.serverURL = serverUrl;
-        this.webTarget = client.target(serverURL);
+        this.targetURL = serverUrl;
+        this.webTarget = client.target(targetURL);
     }
 
 
     public FileLocation getFileLocation(String fileName) throws StatusExeption {
-
-
         Response response = webTarget.path("FileLocation/"+fileName).request(MediaType.APPLICATION_JSON).get();
         if (response.getStatus() != 200){
             throw new StatusExeption(response.getStatus());
@@ -33,6 +30,9 @@ public class JSONService {
         FileLocation fileLocation = response.readEntity(FileLocation.class);
         return fileLocation;
     }
+
+
+
 
 
     public void SubmitName(String name) throws StatusExeption{
@@ -60,6 +60,16 @@ public class JSONService {
             throw new StatusExeption(r.getStatus());
         return;
     }
+
+
+
+    public void Shutdown(){
+       
+
+
+
+    }
+
 
 }
 

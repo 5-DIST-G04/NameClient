@@ -10,7 +10,7 @@ public class Main {
    public static MulticastReceiver receive = new MulticastReceiver("224.0.0.251",3000);
    public static int hashName;
    public static void main(String args[]) throws Exception {
-         Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.println("debug");
         MulticastPublisher publisher = new MulticastPublisher();
         System.out.println("enter the name of this node");
