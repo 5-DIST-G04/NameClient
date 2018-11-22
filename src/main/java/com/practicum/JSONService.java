@@ -63,12 +63,32 @@ public class JSONService {
 
 
 
-    public void Shutdown(){
-       
 
+
+    //--------------- NEW:  get ip of next node and force them to update their previouse node to our previouse node ----------------------
+
+
+    public NodeIP getNodeIP(String fileName) throws StatusExeption {
+        Response response = webTarget.path("NodeIP/"+fileName).request(MediaType.APPLICATION_JSON).get();
+        if (response.getStatus() != 200){
+            throw new StatusExeption(response.getStatus());
+        }
+        NodeIP nodeIP = response.readEntity(NodeIP.class);
+        return nodeIP;
+    }
+
+
+    public void setPreviouseNode(String previouseNode) throws StatusExeption {
+        Response response = webTarget.path("setPreviousetNode/"+previouseNode).request().get();
+        if (response.getStatus() != 200){
+            throw new StatusExeption(response.getStatus());
+        }
 
 
     }
+
+
+
 
 
 }

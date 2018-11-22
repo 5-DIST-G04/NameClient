@@ -25,4 +25,5 @@ public class FileLocation {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
 }

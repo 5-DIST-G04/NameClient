@@ -6,9 +6,21 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.Scanner;
 
+import static javafx.application.Platform.exit;
+
 public class Main {
-   public static MulticastReceiver receive = new MulticastReceiver("224.0.0.251",3000);
-   public static int hashName;
+
+    //data locaal opslaan
+    String nextNode,previouseNode ;
+    String nameServerIP = "192.168.1.2";
+
+
+
+
+    public static MulticastReceiver receive = new MulticastReceiver("224.0.0.251",3000);
+    public static int hashName;
+    public JSONService jsonService = new JSONService(nameServerIP);
+
    public static void main(String args[]) throws Exception {
         Scanner input = new Scanner(System.in);
         System.out.println("debug");
@@ -18,6 +30,7 @@ public class Main {
         hashName = Math.abs(name.hashCode()) % 32768;
         publisher.multicast(name +","+ Inet4Address.getLocalHost().getHostAddress());
         receive.run();
+
 
         /*MulticastPublisher publish = new MulticastPublisher();
         System.out.println("Enter the server url:");
@@ -55,6 +68,18 @@ public class Main {
             System.out.printf("the server responded with status code %d\n",e.getStatuscode());
         }
 */
+    }
+
+
+
+    public void shutdown() throws StatusExeption {
+       //ask nameserver for the ip of nextNode:
+        NodeIP nodeIP = new JSONService(nameServerIP).getNodeIP(nextNode);
+
+        //contact nextnode and ask to update his previouse node
+        new JSONService(nodeIP.getIP()).setPreviouseNode(previouseNode);
+        exit();
+
     }
 
     }
