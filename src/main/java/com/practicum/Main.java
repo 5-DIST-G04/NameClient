@@ -1,5 +1,11 @@
 package com.practicum;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.net.DatagramPacket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -99,9 +105,14 @@ public class Main {
         UnicastPublisher shutdownNextNode = new UnicastPublisher(previousToNext, ownNode.getNextIP());         //send id of previous node to next node
         shutdownNextNode.run();
 
-        String toNameserver = "shu," + hashName ;
-        UnicastPublisher shutdownToServer = new UnicastPublisher(toNameserver, nameServerIP);         //send id of previous node to next node
-        shutdownToServer.run();
+//        String toNameserver = "shu," + hashName ;
+//        UnicastPublisher shutdownToServer = new UnicastPublisher(toNameserver, nameServerIP);         //send id of previous node to next node
+//        shutdownToServer.run();
+
+        Client c = ClientBuilder.newClient();
+        WebTarget target = c.target("http://"+nameServerIP+":8080/");
+        Response response = target.path("NodeName/" + ownNode.getName()).request(MediaType.TEXT_PLAIN).delete(Response.class);
+        System.out.println(response.toString());
     }
 
 
