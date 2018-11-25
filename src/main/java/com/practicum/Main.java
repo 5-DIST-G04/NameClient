@@ -6,30 +6,35 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.Scanner;
 
-import static javafx.application.Platform.exit;
+//import static javafx.application.Platform.exit;
 
 public class Main {
 
     //data locaal opslaan
-    String nextNode,previouseNode ;
+    public String nextNode, previouseNode;
+    public int nextHash, previousHash;
     String nameServerIP = "192.168.1.2";
 
 
-
-
-    public static MulticastReceiver receive = new MulticastReceiver("224.0.0.251",3000);
+    public static MulticastReceiver receive = new MulticastReceiver("224.0.0.251", 3000);
     public static int hashName;
     public JSONService jsonService = new JSONService(nameServerIP);
 
-   public static void main(String args[]) throws Exception {
+    public static void main(String args[]) throws Exception {
         Scanner input = new Scanner(System.in);
         System.out.println("debug");
         MulticastPublisher publisher = new MulticastPublisher();
         System.out.println("enter the name of this node");
         String name = input.next();
         hashName = Math.abs(name.hashCode()) % 32768;
-        publisher.multicast(name +","+ Inet4Address.getLocalHost().getHostAddress());
-        receive.run();
+        Node ownNode = new Node(name, Inet4Address.getLocalHost().getHostAddress(), 0, 0, "", "");
+
+        //bootstrap & discovery
+        publisher.multicast(name + "," + Inet4Address.getLocalHost().getHostAddress());
+        UnicastMultiServer unicastReceiver = new UnicastMultiServer();
+        unicastReceiver.run(ownNode);
+        if ((ownNode.getNextHash() != 0) && (ownNode.getPreviousHash() != 0) && (!ownNode.getNextIP().isEmpty()) && (!ownNode.getPreviousIP().isEmpty()))
+            receive.run(ownNode);
 
 
         /*MulticastPublisher publish = new MulticastPublisher();
@@ -72,7 +77,7 @@ public class Main {
 
 
 
-    public void shutdown() throws StatusExeption {
+   /* public void shutdown() throws StatusExeption {
        //ask nameserver for the ip of nextNode:
         NodeIP nodeIP = new JSONService(nameServerIP).getNodeIP(nextNode);
 
@@ -80,9 +85,25 @@ public class Main {
         new JSONService(nodeIP.getIP()).setPreviouseNode(previouseNode);
         exit();
 
+    }*/
+
+    public void shutdown(Node ownNode) {
+        String nextToPrevious = "shu," + hashName + "," + ownNode.getNextHash() + "," + ownNode.getNextIP();
+        UnicastPublisher shutdownPreviousNode = new UnicastPublisher(nextToPrevious, ownNode.getPreviousIP());         //send id of next node to previous node
+        shutdownPreviousNode.run();
+
+        String previousToNext = "shu," + hashName + "," + ownNode.getPreviousHash() + "," + ownNode.getPreviousIP();
+        UnicastPublisher shutdownNextNode = new UnicastPublisher(previousToNext, ownNode.getNextIP());         //send id of previous node to next node
+        shutdownNextNode.run();
+
+        String toNameserver = "shu," + hashName ;
+        UnicastPublisher shutdownToServer = new UnicastPublisher(toNameserver, nameServerIP);         //send id of previous node to next node
+        shutdownToServer.run();
     }
 
-    }
+
+}
+
 
 
 
