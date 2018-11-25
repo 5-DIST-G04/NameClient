@@ -1,6 +1,12 @@
 package com.practicum;
 
-public class Node {
+public class NodeData {
+    private static NodeData ourInstance = new NodeData();
+
+    public static NodeData getInstance() {
+        return ourInstance;
+    }
+
     private String ipAddress;
     private String name;
     private int nextHash;
@@ -8,12 +14,8 @@ public class Node {
     private String nextIP;
     private String previousIP;
 
-    public Node(){ }
+    private NodeData() {
 
-
-    public Node(String name, String ip){
-        this.ipAddress = ip;
-        this.name = name;
     }
 
     public String getName() {
@@ -59,4 +61,5 @@ public class Node {
     public String getNextIP(){return this.nextIP; }
 
     public String getPreviousIP(){return this.previousIP; }
+
 }

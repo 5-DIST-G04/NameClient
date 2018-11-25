@@ -9,6 +9,8 @@ import java.nio.file.Path;
 
 public class UnicastThread extends Thread {
 
+    private NodeData ownNode = NodeData.getInstance();
+
     private Socket clientSocket;
 
         //private String path;
@@ -20,7 +22,7 @@ public class UnicastThread extends Thread {
     }
 
 
-    public void run (Node ownNode) {
+    public void run () {
         try {
             PrintWriter out =
                     new PrintWriter(clientSocket.getOutputStream(), true);
@@ -43,12 +45,12 @@ public class UnicastThread extends Thread {
             System.out.println("received: " + received);
             int type = bepaalType(received);
             if (type==1) {
-                berekenNieuweNodePrevious(received, ownNode);
+                berekenNieuweNodePrevious(received);
                 }
             else if (type==2)
-                berekenNieuweNodeServer(received, ownNode);
+                berekenNieuweNodeServer(received);
             else if  (type==3)
-                berekenShutdown(received, ownNode);
+                berekenShutdown(received);
 
 
 
@@ -69,7 +71,7 @@ public class UnicastThread extends Thread {
         return type;
     }
 
-    public void berekenNieuweNodePrevious(String bericht, Node ownNode) {
+    public void berekenNieuweNodePrevious(String bericht) {
         String previousBericht =  bericht.substring(1,bericht.length()-1);
         String[] splits = previousBericht.split(",");
         int ownHashfromPrevious = Integer.parseInt(splits[1]);
@@ -84,7 +86,7 @@ public class UnicastThread extends Thread {
 
     }
 
-    public void berekenNieuweNodeServer (String bericht, Node ownNode) {
+    public void berekenNieuweNodeServer (String bericht) {
         String serverBericht = bericht.substring(1, bericht.length() - 1);
         String[] splits = serverBericht.split(",");
         int nodes = Integer.parseInt(splits[1]);
@@ -96,7 +98,7 @@ public class UnicastThread extends Thread {
         }
     }
 
-    public void berekenShutdown(String bericht, Node ownNode) {
+    public void berekenShutdown(String bericht) {
         String shutdownBericht =  bericht.substring(1,bericht.length()-1);
         String[] splits = shutdownBericht.split(",");
         int hashSender = Integer.parseInt(splits[1]);

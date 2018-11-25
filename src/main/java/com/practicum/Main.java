@@ -27,14 +27,16 @@ public class Main {
         System.out.println("enter the name of this node");
         String name = input.next();
         hashName = Math.abs(name.hashCode()) % 32768;
-        Node ownNode = new Node(name, Inet4Address.getLocalHost().getHostAddress(), 0, 0, "", "");
-
+        //Node ownNode = new Node(name, Inet4Address.getLocalHost().getHostAddress(), 0, 0, "", "");
+        NodeData ownNode = NodeData.getInstance();
+        ownNode.setIpAddress(InetAddress.getLocalHost().getHostAddress());
+        ownNode.setName(name);
         //bootstrap & discovery
         publisher.multicast(name + "," + Inet4Address.getLocalHost().getHostAddress());
         UnicastMultiServer unicastReceiver = new UnicastMultiServer();
-        unicastReceiver.run(ownNode);
+        unicastReceiver.run();
         if ((ownNode.getNextHash() != 0) && (ownNode.getPreviousHash() != 0) && (!ownNode.getNextIP().isEmpty()) && (!ownNode.getPreviousIP().isEmpty()))
-            receive.run(ownNode);
+            receive.run();
 
 
         /*MulticastPublisher publish = new MulticastPublisher();
@@ -87,7 +89,8 @@ public class Main {
 
     }*/
 
-    public void shutdown(Node ownNode) {
+    public void shutdown() {
+        NodeData ownNode = NodeData.getInstance();
         String nextToPrevious = "shu," + hashName + "," + ownNode.getNextHash() + "," + ownNode.getNextIP();
         UnicastPublisher shutdownPreviousNode = new UnicastPublisher(nextToPrevious, ownNode.getPreviousIP());         //send id of next node to previous node
         shutdownPreviousNode.run();

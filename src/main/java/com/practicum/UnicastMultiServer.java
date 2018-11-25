@@ -6,7 +6,7 @@ import java.io.*;
 
 public class UnicastMultiServer {
     //private static String fileName = "C:\\Users\\yvesk\\OneDrive\\school\\2018-2019\\Distributed systems\\practicum\\text.txt";
-    public void run(Node ownNode) {
+    public void run() {
 
         /*
         if (args.length != 1) {
@@ -24,7 +24,7 @@ public class UnicastMultiServer {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 UnicastThread thread = new UnicastThread(clientSocket,threadNumber);
-                thread.run(ownNode);
+                thread.run();
                 threadNumber++;
             }
         }
