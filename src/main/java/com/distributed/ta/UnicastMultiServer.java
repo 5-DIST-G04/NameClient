@@ -1,4 +1,4 @@
-package com.practicum;
+package com.distributed.ta;
 
 
 import java.net.*;

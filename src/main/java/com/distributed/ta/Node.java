@@ -1,12 +1,6 @@
-package com.practicum;
+package com.distributed.ta;
 
-public class NodeData {
-    private static NodeData ourInstance = new NodeData();
-
-    public static NodeData getInstance() {
-        return ourInstance;
-    }
-
+public class Node {
     private String ipAddress;
     private String name;
     private int nextHash;
@@ -14,8 +8,12 @@ public class NodeData {
     private String nextIP;
     private String previousIP;
 
-    private NodeData() {
+    public Node(){ }
 
+
+    public Node(String name, String ip){
+        this.ipAddress = ip;
+        this.name = name;
     }
 
     public String getName() {
@@ -61,5 +59,4 @@ public class NodeData {
     public String getNextIP(){return this.nextIP; }
 
     public String getPreviousIP(){return this.previousIP; }
-
 }

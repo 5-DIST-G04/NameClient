@@ -1,4 +1,4 @@
-package com.practicum;
+package com.distributed.ta;
 
 public class StatusExeption extends Exception {
     private int statuscode;

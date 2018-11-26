@@ -1,10 +1,7 @@
-package com.practicum;
+package com.distributed.ta;
 
 import java.net.*;
 import java.io.*;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 
 public class UnicastThread extends Thread {

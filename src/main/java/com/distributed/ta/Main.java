@@ -1,15 +1,12 @@
-package com.practicum;
+package com.distributed.ta;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.DatagramPacket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.util.Scanner;
 
 //import static javafx.application.Platform.exit;

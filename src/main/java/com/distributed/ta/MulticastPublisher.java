@@ -1,4 +1,4 @@
-package com.practicum;
+package com.distributed.ta;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

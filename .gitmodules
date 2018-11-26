@@ -1,0 +1,3 @@
+[submodule "src/main/java/com/distributed/common"]
+	path = src/main/java/com/distributed/common
+	url = git@github.com:5-DIST-G04/ServerClientCommon.git

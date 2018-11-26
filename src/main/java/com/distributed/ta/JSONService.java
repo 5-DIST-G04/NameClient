@@ -1,4 +1,4 @@
-package com.practicum;
+package com.distributed.ta;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;

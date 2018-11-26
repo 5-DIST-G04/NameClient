@@ -1,4 +1,4 @@
-package com.practicum;
+package com.distributed.ta;
 
 public class NodeIP {
     String IP;

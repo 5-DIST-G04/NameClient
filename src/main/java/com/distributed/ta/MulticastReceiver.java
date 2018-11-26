@@ -1,13 +1,6 @@
-package com.practicum;
+package com.distributed.ta;
 
-import java.io.IOException;
 import java.net.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import static com.practicum.Main.hashName;
-import static com.practicum.Main.receive;
 
 public class MulticastReceiver extends Thread {
     protected MulticastSocket socket = null;
@@ -63,13 +56,13 @@ public class MulticastReceiver extends Thread {
         String newIP   = splits[0];
         int newHash = Math.abs(newName.hashCode()) % 32768;
 
-        if ((hashName < newHash) && (newHash < ownNode.getNextHash())) {
+        if ((Main.hashName < newHash) && (newHash < ownNode.getNextHash())) {
 
             String previousMessage = "pre,"+ownNode.getHash()+","+ownNode.getNextHash()+","+ownNode.getIpAddress()+","+ownNode.getNextIP();
             ownNode.setNextHash(newHash);                                                     //update nextNode met de hash van nieuwe node
             UnicastPublisher previous = new UnicastPublisher(previousMessage,newIP);         //Stuur bericht "pre,"+hashName+","+nextHash naar new node met unicast
             previous.run();
-        } else if ((ownNode.getPreviousHash() < newHash) && (newHash < hashName)) {
+        } else if ((ownNode.getPreviousHash() < newHash) && (newHash < Main.hashName)) {
 
             ownNode.setPreviousHash(newHash);
         }

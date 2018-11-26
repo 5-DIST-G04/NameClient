@@ -66,7 +66,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.practicum.Main</mainClass>
+                    <mainClass>com.distributed.ta.Main</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -96,7 +96,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.practicum.Main</mainClass>
+                                    <mainClass>com.distributed.ta.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
