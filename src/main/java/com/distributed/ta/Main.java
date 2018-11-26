@@ -1,5 +1,7 @@
 package com.distributed.ta;
 
+import com.distributed.common.MulticastReceiver;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -13,10 +15,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    //data locaal opslaan
-    public String nextNode, previouseNode;
-    public int nextHash, previousHash;
-    String nameServerIP = "192.168.1.2";
+    String nameServerIP = "192.168.1.2"; //todo: make this autodiscovery
 
 
     public static MulticastReceiver receive = new MulticastReceiver("224.0.0.251", 3000);

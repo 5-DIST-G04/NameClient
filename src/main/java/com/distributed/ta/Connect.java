@@ -1,6 +1,8 @@
 package com.distributed.ta;
 
 
+import com.distributed.common.MulticastReceiver;
+
 import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
