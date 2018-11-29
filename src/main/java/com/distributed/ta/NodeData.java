@@ -1,5 +1,7 @@
 package com.distributed.ta;
 
+import com.distributed.common.Node;
+
 public class NodeData {
     private static NodeData ourInstance = new NodeData();
 
@@ -7,59 +9,48 @@ public class NodeData {
         return ourInstance;
     }
 
-    private String ipAddress;
-    private String name;
-    private int nextHash;
-    private int previousHash;
-    private String nextIP;
-    private String previousIP;
+    private Node thisNode;
+    private Node nextNode;
+    private Node prevNode;
+    private String serverUri;
 
     private NodeData() {
 
     }
 
-    public String getName() {
-        return name;
+    public String getServerUri() {
+        return serverUri;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setServerUri(String serverUri) {
+        this.serverUri = serverUri;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public Node getThisNode() {
+        return thisNode;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setThisNode(Node thisNode) {
+        this.thisNode = thisNode;
     }
 
-    public int getHash(){
-        return Math.abs(this.name.hashCode()) % 32768;
+    public Node getNextNode() {
+        return nextNode;
     }
 
-    public void setNextHash(int next) {
-        this.nextHash = next;
+    public void setNextNode(Node nextNode) {
+        this.nextNode = nextNode;
     }
 
-    public void setPreviousHash(int previous) {
-        this.previousHash = previous;
+    public Node getPrevNode() {
+        return prevNode;
     }
 
-    public int getNextHash(){return this.nextHash; }
-
-    public int getPreviousHash(){return this.previousHash; }
-
-    public void setNextIP(String ip) {
-        this.nextIP = ip;
+    public void setPrevNode(Node prevNode) {
+        this.prevNode = prevNode;
     }
 
-    public void setPreviousIP(String ip) {
-        this.previousIP = ip;
+    public String getBaseUri(){
+        return "http://" + this.thisNode.getIpAddress() + ":8080/";
     }
-
-    public String getNextIP(){return this.nextIP; }
-
-    public String getPreviousIP(){return this.previousIP; }
-
 }
