@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.*;
 
 public class FileChangeListener extends Thread{
-    WatchService watchService;
+    WatchService watchSrvc;
     Path path;
 
     public FileChangeListener(){
@@ -14,18 +14,19 @@ public class FileChangeListener extends Thread{
     @Override
     public void run() {
         try {
-            watchService = FileSystems.getDefault().newWatchService();
+            watchSrvc = FileSystems.getDefault().newWatchService();
             path = Paths.get("src/main/java/com/distributed/data");
             WatchKey watchKey = path.register(
-                    watchService, StandardWatchEventKinds.ENTRY_CREATE,
+                    watchSrvc, StandardWatchEventKinds.ENTRY_CREATE,
                     StandardWatchEventKinds.ENTRY_DELETE,
                     StandardWatchEventKinds.ENTRY_MODIFY);
             WatchKey key;
-            while ((key = watchService.take()) != null) {
+            while ((key = watchSrvc.take()) != null) {
                 for (WatchEvent<?> event : key.pollEvents()) {
                     System.out.println(
                             "Event kind:" + event.kind()
                                     + ". File affected: " + event.context() + ".");
+                    handleChange(event.kind().toString(),event.context().toString());
                 }
                 key.reset();
             }
@@ -38,12 +39,15 @@ public class FileChangeListener extends Thread{
     public void handleChange(String kind, String context){
         switch (kind){
             case "ENTRY_CREATE":{
+                //do something when file is added
 
             }break;
             case "ENTRY_DELETE":{
+                //do something when file is deleted
 
             }break;
             case "ENTRY_MODIFY":{
+                //do something when file is modified
 
             }break;
         }
