@@ -16,7 +16,7 @@ public class ClientApi {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response setNextNode(String serverUri){
+    public Response setServerUri(String serverUri){
         nodeData.setServerUri(serverUri);
         return Response.status(204).build();
     }

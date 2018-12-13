@@ -38,9 +38,13 @@ public class ClientNode {
     }
 
     public void Stop(){
-        ServerComm.RemoveOwnNode();
         receive.stop();
         stopServer();
+    }
+
+    public void ShutDown(){
+        ServerComm.RemoveOwnNode();
+        this.Stop();
     }
 
     private void StartGrizzlyContainer(){
@@ -71,7 +75,7 @@ public class ClientNode {
     }
 
     private void stopServer(){
-        server.stop();
+        server.shutdownNow();
     }
 
 
