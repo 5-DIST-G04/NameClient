@@ -1,5 +1,6 @@
 package com.distributed.ta;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 
@@ -25,7 +26,7 @@ public class FileChangeListener extends Thread{
                 for (WatchEvent<?> event : key.pollEvents()) {
                     System.out.println(
                             "Event kind:" + event.kind()
-                                    + ". File affected: " + event.context() + ".");
+                                    + ". FileData affected: " + event.context() + ".");
                     handleChange(event.kind().toString(),event.context().toString());
                 }
                 key.reset();
@@ -52,5 +53,7 @@ public class FileChangeListener extends Thread{
             }break;
         }
     }
+
+
 
 }

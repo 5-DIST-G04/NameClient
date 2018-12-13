@@ -40,7 +40,7 @@ public class ClientMulticastReceiver extends MulticastReceiver {
 
     public void updateFiles(int newHashInt, Node newNode) {
         // hier gaan we alle elementen van de map filesLog af, maw alle files waar de node owner van is.
-        for (Map.Entry<File,HashMap<Node,Integer> > entry : ownNode.getfileLog().entrySet()) {              //elke entry bestaat uit een file (=key) en de hashmap(=value) waarin dan weer enerzijds de nodes (=keys) te vinden zijn die deze file bezitten en een intger value (=value) die aangeeft of het om replicated, local of downloaded gaat.
+        for (Map.Entry<FileData,HashMap<Node,Integer> > entry : ownNode.getfileLog().entrySet()) {              //elke entry bestaat uit een file (=key) en de hashmap(=value) waarin dan weer enerzijds de nodes (=keys) te vinden zijn die deze file bezitten en een intger value (=value) die aangeeft of het om replicated, local of downloaded gaat.
             if ((newHashInt>entry.getKey().getHash()) && (newHashInt<ownNode.getThisNode().getHash())) {
                 //zet de isFileOwner boolean op true
                 //replicate file naar de nieuwe node, deze zal weten wat hij er mee moet doen zoals beschreven in methode "receiveFile" in klasse ClientNode
