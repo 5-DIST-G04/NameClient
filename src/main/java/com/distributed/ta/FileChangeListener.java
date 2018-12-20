@@ -1,15 +1,19 @@
 package com.distributed.ta;
 
+import com.distributed.common.FileData;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 
-public class FileChangeListener extends Thread{
+public class FileChangeListener extends Thread {
     WatchService watchSrvc;
     Path path;
+    private NodeData nodeData = NodeData.getInstance();
+    private FileChannel fileChannel;
 
-    public FileChangeListener(){
-
+    public FileChangeListener(FileChannel fileChannel){
+        this.fileChannel = fileChannel;
     }
 
     @Override
@@ -40,8 +44,8 @@ public class FileChangeListener extends Thread{
     public void handleChange(String kind, String context){
         switch (kind){
             case "ENTRY_CREATE":{
-                //do something when file is added
 
+                fileChannel.update(context);
             }break;
             case "ENTRY_DELETE":{
                 //do something when file is deleted
