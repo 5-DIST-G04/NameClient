@@ -41,16 +41,18 @@ public class FileManager implements FileChannel {
             replicateFile(fileData);
     }
 
+    //wordt opgeroepen als we file gaan replicaten
     private void replicateFile(FileData fileData) {
         //vraag aan server voor de node waar de HAshNodeID <= hashFile
         int fileHash = fileData.getHash();
-        Node replicationNode = ServerComm.getReplicationNode(fileHash);
-        if (replicationNode==nodeData.getThisNode()) {
+        // volgende lijn zal ook uitgevoerd worden als we in deze methode komen via shutdown maar geen probleem want blijft werken
+        Node replicationNode = ServerComm.getReplicationNode(fileHash);  //vragen aan server naar welke node de file moete gereplicate worden, maw wie de owner is volgens hash alogritme
+        if (replicationNode==nodeData.getThisNode()) {                      // als dat deze node zelf blijkt te zijn, replicate de file naar de vorige node en zet isowner op false want die moet dan geen owner wordne (deze node is zelf owner)
             fileData.setFileOwner(false);
             ClientComm.replicate(fileData, nodeData.getPrevNode());     //dit klopt nog niet want we moeten de echte fileData doorgegeven niet fileData die we zelf net hebben aangemaakt met zelfde naam
         }
         else {
-            fileData.setFileOwner(true);
+            fileData.setFileOwner(true);                                  // normale geval, de server geeft andere node als owner: stuur file naar die node en zet isowner op true (die node wordt owner)
             ClientComm.replicate(fileData,replicationNode);
         }
     }
@@ -58,20 +60,21 @@ public class FileManager implements FileChannel {
 
 
     public void receiveNewFile(FileData fileData){
-        fileData.getFileLog().put(nodeData.getThisNode(), 1);
+
         if (!fileData.isShutdown()) {
             replicated.put(fileData.getHash(),fileData);
+            fileData.getFileLog().put(nodeData.getThisNode(), 1);
             if (fileData.isFileOwner()) {
                 owned.put(fileData.getHash(), fileData);
             }
         } else {
-            if (storedLocal(fileData)) {
-                fileData.setShutdown(false);
-                replicateFile(fileData);
+            //edge case: in geval van shutdown kijken we of de file local op deze node gestored is, zoja moet die nog eens naar de vorige node worden gestuurd
+            if (storedLocal(fileData)) {                // storedlocal gebruiken om na te gaan of de node al locale owner was van deze file
+                fileData.setShutdown(false);            // in dat geval geval doorsturen nog eens naar de previous node, dus zetten we shutdown op false voor de methode in receivedNewFile method in die previousnode
+                replicateFile(fileData);                // file replicaten
             }
             else {
-                owned.put(fileData.getHash(), fileData);
-                replicateFile(fileData);
+                owned.put(fileData.getHash(), fileData);   //als we van shutdown node file krijgen en die is niet local file van deze node, dan wordt deze node gewoon owner (zet in owned ljst)
             }
         }
     }

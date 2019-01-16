@@ -38,5 +38,4 @@ public class ClientMulticastReceiver extends MulticastReceiver {
            }
     }
 
-
 }
